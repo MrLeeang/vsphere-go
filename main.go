@@ -117,7 +117,8 @@ func runCmd() {
 	var Auth types.BaseGuestAuthentication
 	auth := &types.NamePasswordAuthentication{}
 	GuestId := strings.ToUpper(vmIns.Config.GuestId)
-	if strings.Contains(GuestId, "LINUX") {
+	fmt.Println(GuestId)
+	if strings.Contains(GuestId, "LINUX") || strings.Contains(GuestId, "UBUNTU") {
 		auth.Username = "root"
 		auth.Password = "12345678"
 	} else {
@@ -137,7 +138,7 @@ func runCmd() {
 
 	ecmd := &exec.Cmd{
 		// Path: "echo root:12345678 |chpasswd",
-		Path: "ifconfig",
+		Path: "route add default gw 192.168.4.1;ip r",
 		Args: []string{},
 		// Env:    cmd.vars,
 		// Dir:    cmd.dir,
