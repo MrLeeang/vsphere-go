@@ -224,7 +224,7 @@ func getVcTicket() (vcTicket string, err error) {
 func main() {
 	defer vsphere.NewVshpereClient.S.Logout(vsphere.NewVshpereClient.Ctx, vsphere.NewVshpereClient.C)
 	vcTicket, _ := getVcTicket()
-	fmt.Printf("vmrc://clone:%s@192.168.4.240/?moid=vm-2048", vcTicket)
+	fmt.Printf("vmrc://clone:%s@192.168.4.240/?moid=vm-6001", vcTicket)
 	// runCmd()
 	// runCmd()
 	// cloneVm()
