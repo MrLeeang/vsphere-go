@@ -40,6 +40,7 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	NewVshpereClient.C = c
 	NewVshpereClient.S = s
 	NewVshpereClient.Ctx = ctx

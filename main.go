@@ -9,6 +9,8 @@ import (
 	"strings"
 	"vsphere-go/pkg/vsphere"
 
+	"github.com/vmware/govmomi/session"
+
 	"github.com/vmware/govmomi/object"
 
 	"github.com/vmware/govmomi/property"
@@ -138,8 +140,10 @@ func runCmd() {
 
 	ecmd := &exec.Cmd{
 		// Path: "echo root:12345678 |chpasswd",
-		Path: "route add default gw 192.168.4.1;ip r",
-		Args: []string{},
+		// Path: "route add -net 0.0.0.0 netmask 0.0.0.0 gw 192.168.4.1",
+		// Path: "ifconfig ens160 192.168.4.178/24 up",
+		Path: "/bin/bash",
+		Args: []string{"-c", "route add -net 192.168.5.0/24 gw 192.168.4.1;ip r"},
 		// Env:    cmd.vars,
 		// Dir:    cmd.dir,
 		Stdout: os.Stdout,
@@ -208,10 +212,21 @@ func getVms() {
 
 }
 
-func main() {
+func getVcTicket() (vcTicket string, err error) {
 
+	vcTicket, err = session.NewManager(vsphere.NewVshpereClient.C).AcquireCloneTicket(vsphere.NewVshpereClient.Ctx)
+
+	// vmrc://clone:cst-VCT-52ff7747-74c4-93be-549b-a7ec76f547b1--tp-72-07-79-8A-D5-EB-72-90-87-54-38-CD-AD-BC-D1-40-77-AC-9C-39@192.168.4.240/?moid=vm-2048
+	return
+
+}
+
+func main() {
 	defer vsphere.NewVshpereClient.S.Logout(vsphere.NewVshpereClient.Ctx, vsphere.NewVshpereClient.C)
-	runCmd()
+	vcTicket, _ := getVcTicket()
+	fmt.Printf("vmrc://clone:%s@192.168.4.240/?moid=vm-2048", vcTicket)
+	// runCmd()
+	// runCmd()
 	// cloneVm()
 	// getVms()
 }

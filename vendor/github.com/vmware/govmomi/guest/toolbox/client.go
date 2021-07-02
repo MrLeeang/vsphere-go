@@ -130,6 +130,9 @@ func (c *Client) Run(ctx context.Context, cmd *exec.Cmd) error {
 			arg := "'" + strings.Join(append([]string{cmd.Path}, args...), " ") + "'"
 			args = []string{"-c", arg}
 		}
+		// path = "/bin/bash"
+		// arg := "'" + strings.Join(append([]string{cmd.Path}, args...), " ") + "'"
+		// args = []string{"-c", arg}
 	}
 
 	spec := types.GuestProgramSpec{
@@ -138,6 +141,9 @@ func (c *Client) Run(ctx context.Context, cmd *exec.Cmd) error {
 		EnvVariables:     cmd.Env,
 		WorkingDirectory: cmd.Dir,
 	}
+
+	fmt.Println(path)
+	fmt.Println(args)
 
 	pid, err := c.ProcessManager.StartProgram(ctx, c.Authentication, &spec)
 	if err != nil {
